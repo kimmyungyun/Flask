@@ -1,5 +1,5 @@
 from flask import Flask, escape, request, render_template
-
+import random
 app = Flask(__name__)
 
 @app.route('/')
@@ -24,5 +24,29 @@ def variable():
     name = "햄버거"
     return render_template('variable.html', html_name=name)
 
+@app.route('/greeting/<string:name>/')
+def greeting(name):
+    def_name = name
+
+    return render_template('greeting.html', html_name=def_name)
+
+@app.route('/cube/<int:number>/')
+def calcu(number):
+
+    return render_template('number.html', number=number, three_squre=number**3)
+
+@app.route('/menu')
+def lunch():
+    menuitems = {'짜장면':'http://recipe1.ezmember.co.kr/cache/recipe/2016/07/02/40c4f639ca973d9acccecdf7cbe0cbc41.jpg',
+                 '볶음밥':'http://recipe1.ezmember.co.kr/cache/recipe/2015/08/27/932b0eac49b0f341ee9b91553d84d9b91.jpg',
+                 '짬뽕':'http://recipe1.ezmember.co.kr/cache/recipe/2017/06/19/2756808e5603db7a18c4f5ee9a699ee41.jpg'}
+    selected_menu = random.choice(list(menuitems.keys()))
+    return render_template('menu.html', menu_item_link = menuitems[selected_menu], menu_item = selected_menu)
+
+@app.route('/movie')
+def movies():
+    movie_list = ['겨울왕국2', '쥬만지', '엔드게임']
+
+    return render_template('movies.html', movie_list = movie_list)
 if __name__ == '__main__':
     app.run(debug = True)
