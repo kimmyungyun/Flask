@@ -54,7 +54,8 @@ def ping():
 
 @app.route('/pong', methods=['GET', 'POST'])
 def pong():
-    keyword = request.form.get(key='keyword')
+    # keyword = request.form.get('keyword')
+    keyword = request.args.get('keyword')
     return render_template('pong.html',keyword=keyword)
 
 
