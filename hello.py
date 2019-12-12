@@ -58,6 +58,13 @@ def pong():
     keyword = request.args.get('keyword')
     return render_template('pong.html',keyword=keyword)
 
+@app.route('/naver', methods=['GET'])
+def naver():
+    return render_template('naver.html')
+
+@app.route('/google', methods=['GET'])
+def google():
+    return render_template('google.html')
 
 if __name__ == '__main__':
     app.run(debug = True)
