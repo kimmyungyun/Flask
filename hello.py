@@ -1,5 +1,7 @@
 from flask import Flask, escape, request, render_template
 import random
+import requests
+from bs4 import BeautifulSoup
 app = Flask(__name__)
 
 @app.route('/')
@@ -65,6 +67,55 @@ def naver():
 @app.route('/google', methods=['GET'])
 def google():
     return render_template('google.html')
+
+@app.route('/summoner', methods=['GET'])
+def summoner():
+    return render_template('summoner.html')
+
+@app.route('/opgg', methods=['GET'])
+def opgg():
+    username = request.args.get('username')
+    opgg_url = f'https://www.op.gg/summoner/userName={username}'
+
+    res = requests.get(opgg_url).text
+    soup = BeautifulSoup(res, "html.parser")
+
+
+    tier = soup.select_one('#SummonerLayoutContent > div.tabItem.Content.SummonerLayoutContent.summonerLayout-summary > div.SideContent > div.TierBox.Box > div > div.TierRankInfo > div.TierRank').text
+    wins = soup.select_one('#SummonerLayoutContent > div.tabItem.Content.SummonerLayoutContent.summonerLayout-summary > div.SideContent > div.TierBox.Box > div > div.TierRankInfo > div.TierInfo > span.WinLose > span.wins').text
+    losses = soup.select_one('#SummonerLayoutContent > div.tabItem.Content.SummonerLayoutContent.summonerLayout-summary > div.SideContent > div.TierBox.Box > div > div.TierRankInfo > div.TierInfo > span.WinLose > span.losses').text
+
+    return render_template('opgg.html', username=username, tier = tier, wins = wins, losses = losses)
+
+@app.route('/lotto_search', methods=['GET'])
+def lotto_search():
+    return render_template('lotto_search.html')
+
+@app.route('/lotto', methods=['GET'])
+def lotto():
+    number = request.args.get('lotto_num')
+    lotto_num_dict = {}
+    for page_num in range(1, 31):
+        lotto_url = f'http://www.sajuforum.com/01forum/lotto/lotto_winnum.php?&pages={page_num}'
+
+        res = requests.get(lotto_url).text
+        soup = BeautifulSoup(res, 'html.parser')
+        table_body = soup.select_one('table.table_center')
+
+        table_tr = table_body.select('tr')
+        for i in table_tr:
+            if i.select_one('th').text == '회차':
+                continue
+            year = i.select_one('th').text
+            table_tds = i.select('td')
+            lotto_num = [table_tds[num].text for num in range(1, 7)]
+            print(year, lotto_num)
+            lotto_num_dict[year] = lotto_num
+            print('='*30)
+            if year == number:
+                break
+    return render_template('lotto.html', lotto_num_dict = lotto_num_dict[f'{number}'])
+
 
 if __name__ == '__main__':
     app.run(debug = True)
