@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>{{movie_list}}</h1>
+    {% for movie in movie_list    %}
+        <li>{{movie}}</li>
+    {% endfor %}
+
+    <br>
+    <hr>
+    <br>
+
+    {% for movie in movie_list %}
+        {% if movie == '겨울왕국2' %}
+        <li style="color:blue">{{movie}}</li>
+        {% else %}
+        <li>{{movie}}</li>
+    {% endif %}
+{% endfor %}
+</body>
+</html>

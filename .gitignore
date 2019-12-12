@@ -310,20 +310,6 @@ dmypy.json
 # Ignore all local history of files
 .history
 
-### Web ###
-*.asp
-*.cer
-*.csr
-*.css
-*.htm
-*.html
-*.js
-*.jsp
-*.php
-*.rss
-*.wasm
-*.wat
-*.xhtml
 
 ### Windows ###
 # Windows thumbnail cache files
@@ -351,4 +337,4 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# End of https://www.gitignore.io/api/web,python,pycharm,windows,pycharm+all,pycharm+iml,visualstudiocode
+# End of https://www.gitignore.io/api/python,pycharm,windows,pycharm+all,pycharm+iml,visualstudiocode
