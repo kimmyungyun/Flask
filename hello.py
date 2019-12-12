@@ -46,7 +46,17 @@ def lunch():
 @app.route('/movie')
 def movies():
     movie_list = ['겨울왕국2', '쥬만지', '엔드게임']
-
     return render_template('movies.html', movie_list = movie_list)
+
+@app.route('/ping')
+def ping():
+    return render_template('ping.html')
+
+@app.route('/pong', methods=['GET', 'POST'])
+def pong():
+    keyword = request.form.get(key='keyword')
+    return render_template('pong.html',keyword=keyword)
+
+
 if __name__ == '__main__':
     app.run(debug = True)
